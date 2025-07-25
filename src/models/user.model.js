@@ -54,7 +54,7 @@ const userSchema = new Schema (
 userSchema.pre("save" , function (next) {
     if(this.isModifeid("password")) return next();
 
-    this.password = bcrypt.hash(this.password , 10)
+    this.password =  bcrypt.hash(this.password , 10)
     next()
 })
 

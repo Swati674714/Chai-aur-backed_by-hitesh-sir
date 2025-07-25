@@ -3,6 +3,8 @@
 import dotenv from "dotenv";
 import connectDB from "./db/index.js";
 import {app} from './app.js'
+import cookieParser from 'cookie-parser';
+
 
 dotenv.config({
     path : './.env'
