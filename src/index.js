@@ -4,14 +4,15 @@ import dotenv from "dotenv";
 import connectDB from "./db/index.js";
 import {app} from './app.js'
 import cookieParser from 'cookie-parser';
-
+import router from "./routes/user.routes.js";
+import { json } from "express";
 
 dotenv.config({
     path : './.env'
 })
 
-
-
+app.use(json());
+app.use('/api/v1/user',router);
 connectDB()
 .then(() => {
     app.listen(process.env.PORT || 8000,()=>{
