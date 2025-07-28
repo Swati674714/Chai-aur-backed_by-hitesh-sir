@@ -4,6 +4,8 @@ import { User } from "../models/user.model.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken"
+import mongoose from "mongoose";
+
 
 const generateAccessAndRefreshTokens = async(userId) =>
   {
@@ -17,12 +19,10 @@ const generateAccessAndRefreshTokens = async(userId) =>
 
      return {accessToken , refreshToken}
 
-
      } catch (error) {
       throw new ApiError (500 , " Something went wrong while generating refresh and access token")
      }
-}
-
+};
 
 const registerUser = asyncHandler ( async ( req , res ) => {
      // get user details from frontend
@@ -164,8 +164,8 @@ const logoutUser = asyncHandler(async(req, res) => {
   User.findByIdAndUpdate(
       req.user._id,
       {
-           $ser: {
-            refreshToken: undefined
+           $unset: {
+            refreshToken: 1 // this removes the field from document
            }
       },
       {
@@ -314,7 +314,7 @@ return res
   new ApiResponse(200, user, "Avatar image updated successfully")
  )
 
-})
+});
 
 const updateUserCoverImage = asyncHandler(async(req, res) =>
 {
@@ -345,7 +345,7 @@ const updateUserCoverImage = asyncHandler(async(req, res) =>
  .json(
   new ApiResponse(200, user, "Cover image updated successfully")
  )
-})
+});
 
 const getUserChannelProfile = asyncHandler(async(req, res) => {
     const {username} = req.params
@@ -416,7 +416,7 @@ const getUserChannelProfile = asyncHandler(async(req, res) => {
     .json(
       new ApiResponse(200, channel[0], "User channel fetched successfully")
     )
-})
+});
 
 const getWatchHistory = asyncHandler(async(req, res) => {
    const user = await User.aggregate([
@@ -470,7 +470,7 @@ const getWatchHistory = asyncHandler(async(req, res) => {
        "Watch history fetched successfully"
     )
    )
-})
+});
 
 export { 
     registerUser,

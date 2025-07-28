@@ -7,39 +7,39 @@ const userSchema = new Schema (
         username : {
             type:String,
             required : true,
-            unique:true,
-            lowercase:true,
-            trim:true,
-            index:true
+            unique : true,
+            lowercase : true,
+            trim : true,
+            index : true
         },
          email : {
             type:String,
             required : true,
-            unique:true,
-            lowercase:true,
-            trim:true,
+            unique : true,
+            lowercase : true,
+            trim : true,
         },
-        fullName:{
-            type:String,
-            required: true,
-            trim:true,
-            index:true
+        fullName : {
+            type : String,
+            required : true,
+            trim : true,
+            index : true
         },
         avatar : {
-            type: String,   //cloudinary url
+            type : String,   //cloudinary url
             
         },
         coverImage : {
-            type:String  //cludinary url
+            type : String  //cludinary url
         },
-        watchHistory:[
+        watchHistory : [
             {
-               type: Schema.Types.ObjectId,
-               ref: "Vedio"
+               type : Schema.Types.ObjectId,
+               ref : "Vedio"
         }
         ],
         password : {
-            type:String,
+            type : String,
             required : [true , 'Password is required']
         },
         refreshToken : {
@@ -47,28 +47,20 @@ const userSchema = new Schema (
         }
 },
 {
-    timestamps:true
+    timestamps : true
 }
 )
 
-// userSchema.pre("save" , function (next) {
-//    if (!this.isModified("password")) return next();
-
-
-//     this.password =  bcrypt.hash(this.password , 10)
-//     next()
-// })
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next();
 
     this.password = await bcrypt.hash(this.password, 10);
-    next();
-});
+    next()
+})
 
 userSchema.methods.isPasswordCorrect = async function(password){
     return await bcrypt.compare(password, this.password)
 }
-
 
 userSchema.methods.generateAccessToken = function(){
     return jwt.sign(
