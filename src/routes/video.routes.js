@@ -6,10 +6,10 @@ import {
     publishAVideo,
     togglePublishStatus,
     updateVideo,
-} from "../controllers/video.controller.js"
+} from "../controllers/vedio.controller.js"
 import {verifyJWT} from "../middlewares/auth.middleware.js"
 import {upload} from "../middlewares/multer.middleware.js"
-
+import { Vedio } from '../models/video.model.js';
 const router = Router();
 router.use(verifyJWT); // Apply verifyJWT middleware to all routes in this file
 
